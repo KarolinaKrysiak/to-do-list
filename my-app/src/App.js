@@ -14,8 +14,10 @@ function App() {
 		if (newTask.trim() !== "") {
 			// check if newTask is not empty after trimming whitespace
 			setTasks([...tasks, newTask]);
+			setNewTask("");
+		} else {
+			alert("Please enter a task.");
 		}
-		setNewTask("");
 	};
 
 	const handleDelete = (index) => {
