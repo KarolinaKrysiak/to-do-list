@@ -22,26 +22,30 @@ function App() {
 		}
 	};
 
+	const handleKeyDown = (e) => {
+		if (e.key === "Enter") {
+			e.preventDefault();
+			handleSubmit(e);
+		}
+	};
+
 	// remove a task from tasks array
 	const handleDelete = (index) => {
 		setTasks(tasks.filter((task, i) => i !== index));
 	};
 
-	// function to handle drag start event on task item
 	const handleDragStart = (e, index) => {
-		e.dataTransfer.setData("text/plain", index); // set data to be transferred during drag and drop
+		e.dataTransfer.setData("text/plain", index);
 	};
 
-	// function to handle drag over event on task item
 	const handleDragOver = (e, index) => {
-		e.preventDefault(); // prevent default drag and drop behavior
-		const draggedIndex = e.dataTransfer.getData("text/plain"); // get index of dragged task
+		e.preventDefault();
+		const draggedIndex = e.dataTransfer.getData("text/plain");
 		if (draggedIndex !== index) {
-			// if dragged task is not being dragged over itself
 			const newTasks = [...tasks];
-			const [removed] = newTasks.splice(draggedIndex, 1); // remove dragged task from tasks array
-			newTasks.splice(index, 0, removed); // insert dragged task at new index
-			setTasks(newTasks); // update tasks array with new order
+			const [removed] = newTasks.splice(draggedIndex, 1);
+			newTasks.splice(index, 0, removed);
+			setTasks(newTasks);
 		}
 	};
 
@@ -50,17 +54,23 @@ function App() {
 		<div className="App">
 			<h1>To-Do List</h1>
 			<form onSubmit={handleSubmit}>
-				<input type="text" placeholder="Add new task" value={newTask} onChange={handleInputChange} />
+				<input
+					type="text"
+					placeholder="Add new task"
+					value={newTask}
+					onChange={handleInputChange}
+					onKeyDown={handleKeyDown}
+				/>
 				<button type="submit">Add</button>
 			</form>
 			<ul>
 				{/* map over tasks array to render each task as a list item */}
 				{tasks.map((task, index) => (
 					<li
-						key={index} // set key to index for unique identification
-						draggable="true" // allow task item to be draggable
-						onDragStart={(e) => handleDragStart(e, index)} // handle drag start event
-						onDragOver={(e) => handleDragOver(e, index)} // handle drag over event
+						key={index}
+						draggable="true"
+						onDragStart={(e) => handleDragStart(e, index)}
+						onDragOver={(e) => handleDragOver(e, index)}
 					>
 						{index + 1}. {task}
 						<button onClick={() => handleDelete(index)}>Delete</button>
