@@ -11,7 +11,10 @@ function App() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		setTasks([...tasks, newTask]);
+		if (newTask.trim() !== "") {
+			// check if newTask is not empty after trimming whitespace
+			setTasks([...tasks, newTask]);
+		}
 		setNewTask("");
 	};
 
