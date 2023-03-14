@@ -32,7 +32,7 @@ function App() {
 			<ul>
 				{tasks.map((task, index) => (
 					<li key={index}>
-						{task}
+						{index + 1}. {task}
 						<button onClick={() => handleDelete(index)}>Delete</button>
 					</li>
 				))}
