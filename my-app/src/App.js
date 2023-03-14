@@ -20,33 +20,40 @@ function App() {
 		}
 	};
 
-	const handleKeyDown = (e) => {
-		if (e.key === "Enter") {
-			e.preventDefault();
-			handleSubmit(e);
-		}
-	};
-
 	const handleDelete = (index) => {
 		setTasks(tasks.filter((task, i) => i !== index));
+	};
+
+	const handleDragStart = (e, index) => {
+		e.dataTransfer.setData("text/plain", index);
+	};
+
+	const handleDragOver = (e, index) => {
+		e.preventDefault();
+		const draggedIndex = e.dataTransfer.getData("text/plain");
+		if (draggedIndex !== index) {
+			const newTasks = [...tasks];
+			const [removed] = newTasks.splice(draggedIndex, 1);
+			newTasks.splice(index, 0, removed);
+			setTasks(newTasks);
+		}
 	};
 
 	return (
 		<div className="App">
 			<h1>To-Do List</h1>
 			<form onSubmit={handleSubmit}>
-				<input
-					type="text"
-					placeholder="Add new task"
-					value={newTask}
-					onChange={handleInputChange}
-					onKeyDown={handleKeyDown}
-				/>
+				<input type="text" placeholder="Add new task" value={newTask} onChange={handleInputChange} />
 				<button type="submit">Add</button>
 			</form>
 			<ul>
 				{tasks.map((task, index) => (
-					<li key={index}>
+					<li
+						key={index}
+						draggable="true"
+						onDragStart={(e) => handleDragStart(e, index)}
+						onDragOver={(e) => handleDragOver(e, index)}
+					>
 						{index + 1}. {task}
 						<button onClick={() => handleDelete(index)}>Delete</button>
 					</li>
