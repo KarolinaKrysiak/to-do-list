@@ -20,6 +20,13 @@ function App() {
 		}
 	};
 
+	const handleKeyDown = (e) => {
+		if (e.key === "Enter") {
+			e.preventDefault();
+			handleSubmit(e);
+		}
+	};
+
 	const handleDelete = (index) => {
 		setTasks(tasks.filter((task, i) => i !== index));
 	};
@@ -28,7 +35,13 @@ function App() {
 		<div className="App">
 			<h1>To-Do List</h1>
 			<form onSubmit={handleSubmit}>
-				<input type="text" placeholder="Add new task" value={newTask} onChange={handleInputChange} />
+				<input
+					type="text"
+					placeholder="Add new task"
+					value={newTask}
+					onChange={handleInputChange}
+					onKeyDown={handleKeyDown}
+				/>
 				<button type="submit">Add</button>
 			</form>
 			<ul>
